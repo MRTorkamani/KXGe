@@ -1,20 +1,16 @@
-dn="dn"
-up="up"
 for name in K*
 do
 cd $name
-rm -r $name$dn $name$up
-mkdir $name$dn $name$up
-
-cat $name.energydn*	>>	$name$dn/$name.energy
-cat $name.energyup*	>>	$name$up/$name.energy
-cat $name.scf		>>	$name$dn/$name.scf
-cat $name.scf		>>	$name$up/$name.scf
-cat $name.struct	>>	$name$dn/$name.struct
-cat $name.struct	>>	$name$up/$name.struct
-
 for spin in dn up
 do
+rm -r $name$spin
+
+mkdir $name$spin
+
+sed '1,7d' $name.energy$spin*	>>	$name$spin/$name.energy
+cat $name.scf			>>	$name$spin/$name.scf
+cat $name.struct		>>	$name$spin/$name.struct
+
 cd $name$spin
 cat > $name.py << EOF
 import sys
